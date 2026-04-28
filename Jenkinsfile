@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    triggers {
+        githubPush()
+    }
+
     environment {
         COMPOSE_FILE = 'docker-compose.yml'
     }
@@ -17,14 +21,14 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building Docker images...'
-                sh 'docker compose build'
+                bat 'docker compose build'
             }
         }
 
         stage('Deploy') {
             steps {
                 echo 'Starting containers...'
-                sh 'docker compose up -d'
+                bat 'docker compose up -d'
             }
         }
 
@@ -36,7 +40,7 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed. Check the logs above.'
-            sh 'docker compose down'
+            bat 'docker compose down'
         }
     }
 }
