@@ -27,6 +27,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
+                echo 'Stopping any existing containers...'
+                bat 'docker compose down'
                 echo 'Starting containers...'
                 bat 'docker compose up -d'
             }
